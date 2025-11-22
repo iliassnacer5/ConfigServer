@@ -1,25 +1,51 @@
-logging:
-  level:
-    org.springframework: INFO
-    ma.gov.pfe: DEBUG
-    reactor.netty: DEBUG
-    reactor.core: DEBUG
-    org.springframework.web.reactive: DEBUG
-
 spring:
+  profiles:
+    active: dev
+  application:
+    name: user-service
+
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:~/users-dev-8888
+    url: jdbc:h2:file:~/user-db-${spring.profiles.active}-${server.port};DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
     username: sa
     password: password
+
   jpa:
+    show-sql: true
     generate-ddl: true
-    show_sql: true
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.H2Dialect
+
   h2:
     console:
       enabled: true
       path: /h2-console
 
-server:
-  servlet:
-    context-path: /
+logging:
+  level:
+    org.springframework: INFO
+    ma.emsiG2: DEBUG
+    reactor.netty: DEBUG
+    reactor.core: DEBUG
+    org.springframework.web.reactive: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}-${spring.profiles.active}-${server.port}
+
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
