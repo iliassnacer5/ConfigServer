@@ -1,4 +1,6 @@
-EUREKA:
-CLIENT:
-  REGISTER-WITH-EUREKA: FALSE
-  FETCH-REGISTRY: FALSE
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
